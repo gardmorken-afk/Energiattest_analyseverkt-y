@@ -259,6 +259,19 @@ tr.detail td {
         <option value="mangler">Mangler attest</option>
         <option value="darlig">Dårlig karakter</option>
       </select>
+      <select id="kunderBRA">
+        <option value="0" selected>Alle størrelser</option>
+        <option value="500">≥ 500 m²</option>
+        <option value="1000">≥ 1 000 m²</option>
+        <option value="2500">≥ 2 500 m²</option>
+        <option value="5000">≥ 5 000 m²</option>
+        <option value="10000">≥ 10 000 m²</option>
+      </select>
+      <input type="text" id="kunderSearch" placeholder="Søk kunde eller adresse..." style="min-width:220px">
+      <select id="kunderPreset" title="Lagrede filter">
+        <option value="">— Lagret filter —</option>
+      </select>
+      <button class="btn btn-ghost" id="lagrePreset" title="Lagre dagens filter">Lagre filter</button>
     </div>
   </div>
   <p class="intro">
@@ -290,7 +303,14 @@ tr.detail td {
         <option value="mangler">Mangler attest</option>
         <option value="darlig">Dårlig karakter</option>
       </select>
-      <input type="text" id="nysalgSearch" placeholder="Søk eier...">
+      <select id="nysalgBRA">
+        <option value="0" selected>Alle størrelser</option>
+        <option value="1000">≥ 1 000 m² per bygg</option>
+        <option value="2500">≥ 2 500 m² per bygg</option>
+        <option value="5000">≥ 5 000 m² per bygg</option>
+        <option value="10000">≥ 10 000 m² per bygg</option>
+      </select>
+      <input type="text" id="nysalgSearch" placeholder="Søk eier eller adresse..." style="min-width:220px">
     </div>
   </div>
   <p class="intro">
@@ -347,10 +367,13 @@ const state = {
   kunderStatus: 'alle',
   kunderTrigger: 'alle',
   kunderFylke: 'alle',
+  kunderBRA: 0,
+  kunderSearch: '',
   nysalgSize: 10,
   nysalgTrigger: 'alle',
   nysalgSearch: '',
-  nysalgFylke: 'alle'
+  nysalgFylke: 'alle',
+  nysalgBRA: 0
 };
 
 function statusTekst(s) { return {'A':'Aktiv kunde','B':'Tidligere kunde','S':'Slettet'}[s] || ''; }
@@ -543,10 +566,8 @@ function setupKunderFilters() {
 function renderKunder() {
   let bygg;
   if (state.kunderPL === '__INGEN__') {
-    // Eksisterende kunder uten PL-tildeling
     bygg = D.bygg.filter(b => !b.pl && b.plst);
   } else if (state.kunderPL === 'alle') {
-    // Alle eksisterende kunder (med eller uten PL)
     bygg = D.bygg.filter(b => b.pl || b.plst);
   } else {
     bygg = D.bygg.filter(b => b.pl === state.kunderPL);
@@ -554,6 +575,14 @@ function renderKunder() {
   if (state.kunderFylke !== 'alle') bygg = bygg.filter(b => b.fylke === state.kunderFylke);
   if (state.kunderStatus !== 'alle') bygg = bygg.filter(b => b.plst === state.kunderStatus);
   if (state.kunderTrigger !== 'alle') bygg = bygg.filter(b => byggMatcherTrigger(b, state.kunderTrigger));
+  if (state.kunderBRA > 0) bygg = bygg.filter(b => (b.b||0) >= state.kunderBRA);
+  if (state.kunderSearch) {
+    const s = state.kunderSearch.toLowerCase();
+    bygg = bygg.filter(b => 
+      (b.e && b.e.toLowerCase().includes(s)) ||
+      (b.a && b.a.toLowerCase().includes(s))
+    );
+  }
   
   const kunder = grupperPerKunde(bygg);
   // Sort: aktive først (A), så tidligere (B), så størrelse
@@ -580,14 +609,18 @@ function renderKunder() {
 
 // === NYSALG ===
 function renderNysalg() {
-  let bygg = D.bygg.filter(b => !b.pl);
+  let bygg = D.bygg.filter(b => !b.pl && !b.plst);
   if (state.nysalgFylke !== 'alle') bygg = bygg.filter(b => b.fylke === state.nysalgFylke);
   if (state.nysalgTrigger !== 'alle') bygg = bygg.filter(b => byggMatcherTrigger(b, state.nysalgTrigger));
+  if (state.nysalgBRA > 0) bygg = bygg.filter(b => (b.b||0) >= state.nysalgBRA);
   
   let kunder = grupperPerKunde(bygg).filter(k => k.bygg.length >= state.nysalgSize);
   if (state.nysalgSearch) {
     const s = state.nysalgSearch.toLowerCase();
-    kunder = kunder.filter(k => k.eier.toLowerCase().includes(s));
+    kunder = kunder.filter(k => 
+      k.eier.toLowerCase().includes(s) ||
+      k.bygg.some(b => b.a && b.a.toLowerCase().includes(s))
+    );
   }
   const offRe = /KOMMUNE|FYLKE|STATSBYGG|UNIVERSITET|HØGSKOLE|HELSE BERGEN|HELSE VEST|HELSE FØRDE|FORSVARSBYGG|BANE NOR|AVINOR|NRK|VEGVESEN/;
   kunder = kunder.filter(k => !offRe.test(k.eier.toUpperCase()));
@@ -694,11 +727,100 @@ document.getElementById('kunderPL').addEventListener('change', e => { state.kund
 document.getElementById('kunderFylke').addEventListener('change', e => { state.kunderFylke = e.target.value; state.expandedKunde = null; renderKunder(); });
 document.getElementById('kunderStatus').addEventListener('change', e => { state.kunderStatus = e.target.value; state.expandedKunde = null; renderKunder(); });
 document.getElementById('kunderTrigger').addEventListener('change', e => { state.kunderTrigger = e.target.value; state.expandedKunde = null; renderKunder(); });
+document.getElementById('kunderBRA').addEventListener('change', e => { state.kunderBRA = +e.target.value; state.expandedKunde = null; renderKunder(); });
+document.getElementById('kunderSearch').addEventListener('input', e => { state.kunderSearch = e.target.value; state.expandedKunde = null; renderKunder(); });
 document.getElementById('nysalgFylke').addEventListener('change', e => { state.nysalgFylke = e.target.value; state.expandedKunde = null; renderNysalg(); });
 document.getElementById('nysalgSize').addEventListener('change', e => { state.nysalgSize = +e.target.value; state.expandedKunde = null; renderNysalg(); });
 document.getElementById('nysalgTrigger').addEventListener('change', e => { state.nysalgTrigger = e.target.value; state.expandedKunde = null; renderNysalg(); });
 document.getElementById('nysalgSearch').addEventListener('input', e => { state.nysalgSearch = e.target.value; state.expandedKunde = null; renderNysalg(); });
+document.getElementById('nysalgBRA').addEventListener('change', e => { state.nysalgBRA = +e.target.value; state.expandedKunde = null; renderNysalg(); });
 
+
+
+// === LAGREDE FILTER (presets) ===
+function lastPresets() {
+  try {
+    return JSON.parse(localStorage.getItem('entro_presets') || '{}');
+  } catch { return {}; }
+}
+
+function lagrePresets(presets) {
+  try { localStorage.setItem('entro_presets', JSON.stringify(presets)); } catch {}
+}
+
+function oppdaterPresetDropdown() {
+  const sel = document.getElementById('kunderPreset');
+  const presets = lastPresets();
+  // Behold første option
+  sel.innerHTML = '<option value="">— Lagret filter —</option>';
+  Object.keys(presets).sort().forEach(navn => {
+    const o = document.createElement('option');
+    o.value = navn;
+    o.textContent = navn;
+    sel.appendChild(o);
+  });
+  // Egen "slett valgt"-option
+  const slett = document.createElement('option');
+  slett.value = '__slett__';
+  slett.textContent = '— Slett et lagret filter —';
+  sel.appendChild(slett);
+}
+
+function lagreNyttPreset() {
+  const navn = prompt('Navn på filteret (eks. "Min portefølje, utgått attest, > 5000 m²"):');
+  if (!navn || !navn.trim()) return;
+  const presets = lastPresets();
+  presets[navn.trim()] = {
+    kunderPL: state.kunderPL,
+    kunderFylke: state.kunderFylke,
+    kunderStatus: state.kunderStatus,
+    kunderTrigger: state.kunderTrigger,
+    kunderBRA: state.kunderBRA,
+    kunderSearch: state.kunderSearch
+  };
+  lagrePresets(presets);
+  oppdaterPresetDropdown();
+  document.getElementById('kunderPreset').value = navn.trim();
+}
+
+function bruktPreset(navn) {
+  if (navn === '__slett__') {
+    const presets = lastPresets();
+    const navne = Object.keys(presets);
+    if (navne.length === 0) { alert('Ingen lagrede filtre.'); return; }
+    const slett = prompt('Hvilket filter vil du slette?\n\n' + navne.join('\n'));
+    if (slett && presets[slett]) {
+      delete presets[slett];
+      lagrePresets(presets);
+      oppdaterPresetDropdown();
+    }
+    document.getElementById('kunderPreset').value = '';
+    return;
+  }
+  if (!navn) return;
+  const presets = lastPresets();
+  const p = presets[navn];
+  if (!p) return;
+  state.kunderPL = p.kunderPL || 'alle';
+  state.kunderFylke = p.kunderFylke || 'alle';
+  state.kunderStatus = p.kunderStatus || 'alle';
+  state.kunderTrigger = p.kunderTrigger || 'alle';
+  state.kunderBRA = p.kunderBRA || 0;
+  state.kunderSearch = p.kunderSearch || '';
+  // Sett verdier i UI
+  document.getElementById('kunderPL').value = state.kunderPL;
+  document.getElementById('kunderFylke').value = state.kunderFylke;
+  document.getElementById('kunderStatus').value = state.kunderStatus;
+  document.getElementById('kunderTrigger').value = state.kunderTrigger;
+  document.getElementById('kunderBRA').value = state.kunderBRA;
+  document.getElementById('kunderSearch').value = state.kunderSearch;
+  state.expandedKunde = null;
+  renderKunder();
+}
+
+document.getElementById('lagrePreset').addEventListener('click', lagreNyttPreset);
+document.getElementById('kunderPreset').addEventListener('change', e => bruktPreset(e.target.value));
+oppdaterPresetDropdown();
 
 setupKunderFilters();
 renderKunder();
