@@ -295,9 +295,26 @@ tr.detail td {
     </div>
     <div class="controls">
       <select id="kunderPL"></select>
-      <select id="kunderFylke">
-        <option value="alle" selected>Alle fylker</option>
-      </select>
+      <details class="segment-dd" id="kunderFylkeDD">
+        <summary class="segment-summary"><span id="kunderFylkeLabel">Alle fylker</span></summary>
+        <div class="segment-checks">
+          <label><input type="checkbox" class="fylke-kunder" value="Vestland" checked> Vestland</label>
+          <label><input type="checkbox" class="fylke-kunder" value="Trøndelag" checked> Trøndelag</label>
+          <label><input type="checkbox" class="fylke-kunder" value="Oslo" checked> Oslo</label>
+          <label><input type="checkbox" class="fylke-kunder" value="Innlandet" checked> Innlandet</label>
+          <label><input type="checkbox" class="fylke-kunder" value="Rogaland" checked> Rogaland</label>
+          <label><input type="checkbox" class="fylke-kunder" value="Akershus" checked> Akershus</label>
+          <label><input type="checkbox" class="fylke-kunder" value="Møre og Romsdal" checked> Møre og Romsdal</label>
+          <label><input type="checkbox" class="fylke-kunder" value="Agder" checked> Agder</label>
+          <label><input type="checkbox" class="fylke-kunder" value="Nordland" checked> Nordland</label>
+          <label><input type="checkbox" class="fylke-kunder" value="Østfold" checked> Østfold</label>
+          <label><input type="checkbox" class="fylke-kunder" value="Buskerud" checked> Buskerud</label>
+          <label><input type="checkbox" class="fylke-kunder" value="Telemark" checked> Telemark</label>
+          <label><input type="checkbox" class="fylke-kunder" value="Vestfold" checked> Vestfold</label>
+          <label><input type="checkbox" class="fylke-kunder" value="Troms" checked> Troms</label>
+          <label><input type="checkbox" class="fylke-kunder" value="Finnmark" checked> Finnmark</label>
+        </div>
+      </details>
       <select id="kunderStatus">
         <option value="alle" selected>Alle statuser</option>
         <option value="A">Bare aktive</option>
@@ -356,9 +373,26 @@ tr.detail td {
       <div class="section-sub" id="nysalgSub">Eiere uten relasjon til ENTRO</div>
     </div>
     <div class="controls">
-      <select id="nysalgFylke">
-        <option value="alle" selected>Alle fylker</option>
-      </select>
+      <details class="segment-dd" id="nysalgFylkeDD">
+        <summary class="segment-summary"><span id="nysalgFylkeLabel">Alle fylker</span></summary>
+        <div class="segment-checks">
+          <label><input type="checkbox" class="fylke-nysalg" value="Vestland" checked> Vestland</label>
+          <label><input type="checkbox" class="fylke-nysalg" value="Trøndelag" checked> Trøndelag</label>
+          <label><input type="checkbox" class="fylke-nysalg" value="Oslo" checked> Oslo</label>
+          <label><input type="checkbox" class="fylke-nysalg" value="Innlandet" checked> Innlandet</label>
+          <label><input type="checkbox" class="fylke-nysalg" value="Rogaland" checked> Rogaland</label>
+          <label><input type="checkbox" class="fylke-nysalg" value="Akershus" checked> Akershus</label>
+          <label><input type="checkbox" class="fylke-nysalg" value="Møre og Romsdal" checked> Møre og Romsdal</label>
+          <label><input type="checkbox" class="fylke-nysalg" value="Agder" checked> Agder</label>
+          <label><input type="checkbox" class="fylke-nysalg" value="Nordland" checked> Nordland</label>
+          <label><input type="checkbox" class="fylke-nysalg" value="Østfold" checked> Østfold</label>
+          <label><input type="checkbox" class="fylke-nysalg" value="Buskerud" checked> Buskerud</label>
+          <label><input type="checkbox" class="fylke-nysalg" value="Telemark" checked> Telemark</label>
+          <label><input type="checkbox" class="fylke-nysalg" value="Vestfold" checked> Vestfold</label>
+          <label><input type="checkbox" class="fylke-nysalg" value="Troms" checked> Troms</label>
+          <label><input type="checkbox" class="fylke-nysalg" value="Finnmark" checked> Finnmark</label>
+        </div>
+      </details>
       <select id="nysalgSize">
         <option value="10" selected>≥ 10 bygg</option>
         <option value="5">≥ 5 bygg</option>
@@ -418,9 +452,26 @@ tr.detail td {
       <select id="kartlPL">
         <option value="alle" selected>Alle ansvarlige</option>
       </select>
-      <select id="kartlFylke">
-        <option value="alle" selected>Alle fylker</option>
-      </select>
+      <details class="segment-dd" id="kartlFylkeDD">
+        <summary class="segment-summary"><span id="kartlFylkeLabel">Alle fylker</span></summary>
+        <div class="segment-checks">
+          <label><input type="checkbox" class="fylke-kartl" value="Vestland" checked> Vestland</label>
+          <label><input type="checkbox" class="fylke-kartl" value="Trøndelag" checked> Trøndelag</label>
+          <label><input type="checkbox" class="fylke-kartl" value="Oslo" checked> Oslo</label>
+          <label><input type="checkbox" class="fylke-kartl" value="Innlandet" checked> Innlandet</label>
+          <label><input type="checkbox" class="fylke-kartl" value="Rogaland" checked> Rogaland</label>
+          <label><input type="checkbox" class="fylke-kartl" value="Akershus" checked> Akershus</label>
+          <label><input type="checkbox" class="fylke-kartl" value="Møre og Romsdal" checked> Møre og Romsdal</label>
+          <label><input type="checkbox" class="fylke-kartl" value="Agder" checked> Agder</label>
+          <label><input type="checkbox" class="fylke-kartl" value="Nordland" checked> Nordland</label>
+          <label><input type="checkbox" class="fylke-kartl" value="Østfold" checked> Østfold</label>
+          <label><input type="checkbox" class="fylke-kartl" value="Buskerud" checked> Buskerud</label>
+          <label><input type="checkbox" class="fylke-kartl" value="Telemark" checked> Telemark</label>
+          <label><input type="checkbox" class="fylke-kartl" value="Vestfold" checked> Vestfold</label>
+          <label><input type="checkbox" class="fylke-kartl" value="Troms" checked> Troms</label>
+          <label><input type="checkbox" class="fylke-kartl" value="Finnmark" checked> Finnmark</label>
+        </div>
+      </details>
       <select id="kartlRelasjon">
         <option value="alle" selected>Alle bygg</option>
         <option value="eksisterende">Bare eksisterende kunder</option>
@@ -504,18 +555,18 @@ const state = {
   kunderPL: 'Gard Morken',
   kunderStatus: 'alle',
   kunderTrigger: new Set(['utlopt','fjernv','mangler','darlig','utloper3']),
-  kunderFylke: 'alle',
+  kunderFylke: new Set(['Vestland','Trøndelag','Oslo','Innlandet','Rogaland','Akershus','Møre og Romsdal','Agder','Nordland','Østfold','Buskerud','Telemark','Vestfold','Troms','Finnmark']),
   kunderBRA: 0,
   kunderSearch: '',
   kunderSegment: new Set(['kontor','handel','industri','logistikk','hotell','skole','helse','idrett','barnehage','kultur','offentlig','uten']),
   nysalgSize: 10,
   nysalgTrigger: new Set(['utlopt','fjernv','mangler','darlig','utloper3']),
   nysalgSearch: '',
-  nysalgFylke: 'alle',
+  nysalgFylke: new Set(['Vestland','Trøndelag','Oslo','Innlandet','Rogaland','Akershus','Møre og Romsdal','Agder','Nordland','Østfold','Buskerud','Telemark','Vestfold','Troms','Finnmark']),
   nysalgBRA: 0,
   nysalgSegment: new Set(['kontor','handel','industri','logistikk','hotell','skole','helse','idrett','barnehage','kultur','offentlig','uten']),
   kartlPL: 'alle',
-  kartlFylke: 'alle',
+  kartlFylke: new Set(['Vestland','Trøndelag','Oslo','Innlandet','Rogaland','Akershus','Møre og Romsdal','Agder','Nordland','Østfold','Buskerud','Telemark','Vestfold','Troms','Finnmark']),
   kartlRelasjon: 'alle',
   kartlSearch: '',
   kartlBRA: 1000,
@@ -718,27 +769,7 @@ function setupKunderFilters() {
     sel.appendChild(o);
   }
   
-  // Fylke
-  const fSel = document.getElementById('kunderFylke');
-  const fCounts = {};
-  D.bygg.forEach(b => { if (b.pl && b.fylke) fCounts[b.fylke] = (fCounts[b.fylke]||0)+1; });
-  Object.keys(fCounts).sort((a,b) => fCounts[b]-fCounts[a]).forEach(f => {
-    const o = document.createElement('option');
-    o.value = f;
-    o.textContent = `${f} (${fCounts[f]})`;
-    fSel.appendChild(o);
-  });
-  
-  // Nysalg fylke
-  const nfSel = document.getElementById('nysalgFylke');
-  const nfCounts = {};
-  D.bygg.forEach(b => { if (!b.pl && b.fylke) nfCounts[b.fylke] = (nfCounts[b.fylke]||0)+1; });
-  Object.keys(nfCounts).sort((a,b) => nfCounts[b]-nfCounts[a]).forEach(f => {
-    const o = document.createElement('option');
-    o.value = f;
-    o.textContent = `${f} (${nfCounts[f]})`;
-    nfSel.appendChild(o);
-  });
+
 }
 
 function renderKunder() {
@@ -750,7 +781,7 @@ function renderKunder() {
   } else {
     bygg = D.bygg.filter(b => b.pl === state.kunderPL);
   }
-  if (state.kunderFylke !== 'alle') bygg = bygg.filter(b => b.fylke === state.kunderFylke);
+  if (state.kunderFylke.size < 15) bygg = bygg.filter(b => state.kunderFylke.has(b.fylke));
   if (state.kunderStatus !== 'alle') bygg = bygg.filter(b => b.plst === state.kunderStatus);
   if (state.kunderTrigger.size < 5) bygg = bygg.filter(b => byggMatcherTriggerSet(b, state.kunderTrigger));
   if (state.kunderBRA > 0) bygg = bygg.filter(b => (b.b||0) >= state.kunderBRA);
@@ -797,7 +828,7 @@ function renderKunder() {
 // === NYSALG ===
 function renderNysalg() {
   let bygg = D.bygg.filter(b => !b.pl && !b.plst);
-  if (state.nysalgFylke !== 'alle') bygg = bygg.filter(b => b.fylke === state.nysalgFylke);
+  if (state.nysalgFylke.size < 15) bygg = bygg.filter(b => state.nysalgFylke.has(b.fylke));
   if (state.nysalgTrigger.size < 5) bygg = bygg.filter(b => byggMatcherTriggerSet(b, state.nysalgTrigger));
   if (state.nysalgBRA > 0) bygg = bygg.filter(b => (b.b||0) >= state.nysalgBRA);
   const segN = state.nysalgSegment;
@@ -841,18 +872,7 @@ function setupKartleggingFilters() {
     sel.appendChild(o);
   });
   
-  // Fylke
-  const fCounts = {};
-  D.bygg.forEach(b => {
-    if (b.seg && (b.seg.includes('industri') || b.seg.includes('logistikk')) && b.fylke) fCounts[b.fylke] = (fCounts[b.fylke]||0)+1;
-  });
-  const fSel = document.getElementById('kartlFylke');
-  Object.keys(fCounts).sort((a,b) => fCounts[b]-fCounts[a]).forEach(f => {
-    const o = document.createElement('option');
-    o.value = f;
-    o.textContent = `${f} (${fCounts[f]})`;
-    fSel.appendChild(o);
-  });
+
 }
 
 function oppdaterKartleggingEstimat() {
@@ -871,7 +891,7 @@ function renderKartlegging() {
     if (state.kartlPL === '__INGEN__') bygg = bygg.filter(b => !b.pl && b.plst);
     else bygg = bygg.filter(b => b.pl === state.kartlPL);
   }
-  if (state.kartlFylke !== 'alle') bygg = bygg.filter(b => b.fylke === state.kartlFylke);
+  if (state.kartlFylke.size < 15) bygg = bygg.filter(b => state.kartlFylke.has(b.fylke));
   if (state.kartlRelasjon === 'eksisterende') bygg = bygg.filter(b => b.pl || b.plst);
   else if (state.kartlRelasjon === 'nysalg') bygg = bygg.filter(b => !b.pl && !b.plst);
   if (state.kartlLeietakere !== 'alle') {
@@ -998,7 +1018,25 @@ document.querySelectorAll('.tab').forEach(t => {
 });
 
 document.getElementById('kunderPL').addEventListener('change', e => { state.kunderPL = e.target.value; state.expandedKunde = null; renderKunder(); });
-document.getElementById('kunderFylke').addEventListener('change', e => { state.kunderFylke = e.target.value; state.expandedKunde = null; renderKunder(); });
+function oppdaterKunderFylkeLabel() {
+  const total = 15;
+  const valgte = state.kunderFylke.size;
+  const lbl = document.getElementById('kunderFylkeLabel');
+  if (valgte === total) lbl.textContent = 'Alle fylker';
+  else if (valgte === 0) lbl.textContent = 'Ingen valgt';
+  else if (valgte === 1) lbl.textContent = [...state.kunderFylke][0];
+  else lbl.textContent = `${valgte} fylker valgt`;
+}
+document.querySelectorAll('.fylke-kunder').forEach(c => {
+  c.addEventListener('change', e => {
+    if (e.target.checked) state.kunderFylke.add(e.target.value);
+    else state.kunderFylke.delete(e.target.value);
+    oppdaterKunderFylkeLabel();
+    state.expandedKunde = null;
+    renderKunder();
+  });
+});
+oppdaterKunderFylkeLabel();
 document.getElementById('kunderStatus').addEventListener('change', e => { state.kunderStatus = e.target.value; state.expandedKunde = null; renderKunder(); });
 function oppdaterKunderTrigLabel() {
   const total = 5;
@@ -1043,7 +1081,25 @@ document.querySelectorAll('.seg-kunder').forEach(c => {
   });
 });
 oppdaterKunderSegLabel();
-document.getElementById('nysalgFylke').addEventListener('change', e => { state.nysalgFylke = e.target.value; state.expandedKunde = null; renderNysalg(); });
+function oppdaterNysalgFylkeLabel() {
+  const total = 15;
+  const valgte = state.nysalgFylke.size;
+  const lbl = document.getElementById('nysalgFylkeLabel');
+  if (valgte === total) lbl.textContent = 'Alle fylker';
+  else if (valgte === 0) lbl.textContent = 'Ingen valgt';
+  else if (valgte === 1) lbl.textContent = [...state.nysalgFylke][0];
+  else lbl.textContent = `${valgte} fylker valgt`;
+}
+document.querySelectorAll('.fylke-nysalg').forEach(c => {
+  c.addEventListener('change', e => {
+    if (e.target.checked) state.nysalgFylke.add(e.target.value);
+    else state.nysalgFylke.delete(e.target.value);
+    oppdaterNysalgFylkeLabel();
+    state.expandedKunde = null;
+    renderNysalg();
+  });
+});
+oppdaterNysalgFylkeLabel();
 document.getElementById('nysalgSize').addEventListener('change', e => { state.nysalgSize = +e.target.value; state.expandedKunde = null; renderNysalg(); });
 function oppdaterNysalgTrigLabel() {
   const total = 5;
@@ -1126,7 +1182,7 @@ function lagreNyttPreset() {
   const presets = lastPresets();
   presets[navn.trim()] = {
     kunderPL: state.kunderPL,
-    kunderFylke: state.kunderFylke,
+    kunderFylke: [...state.kunderFylke],
     kunderStatus: state.kunderStatus,
     kunderTrigger: [...state.kunderTrigger],
     kunderBRA: state.kunderBRA,
@@ -1156,14 +1212,15 @@ function bruktPreset(navn) {
   const p = presets[navn];
   if (!p) return;
   state.kunderPL = p.kunderPL || 'alle';
-  state.kunderFylke = p.kunderFylke || 'alle';
+  state.kunderFylke = new Set(Array.isArray(p.kunderFylke) ? p.kunderFylke : ['Vestland','Trøndelag','Oslo','Innlandet','Rogaland','Akershus','Møre og Romsdal','Agder','Nordland','Østfold','Buskerud','Telemark','Vestfold','Troms','Finnmark']);
   state.kunderStatus = p.kunderStatus || 'alle';
   state.kunderTrigger = new Set(Array.isArray(p.kunderTrigger) ? p.kunderTrigger : ['utlopt','fjernv','mangler','darlig','utloper3']);
   state.kunderBRA = p.kunderBRA || 0;
   state.kunderSearch = p.kunderSearch || '';
   // Sett verdier i UI
   document.getElementById('kunderPL').value = state.kunderPL;
-  document.getElementById('kunderFylke').value = state.kunderFylke;
+  document.querySelectorAll('.fylke-kunder').forEach(c => { c.checked = state.kunderFylke.has(c.value); });
+  oppdaterKunderFylkeLabel();
   document.getElementById('kunderStatus').value = state.kunderStatus;
   // Sett checkbox-tilstand for triggere
   document.querySelectorAll('.trig-kunder').forEach(c => { c.checked = state.kunderTrigger.has(c.value); });
@@ -1182,7 +1239,25 @@ setupKunderFilters();
 setupKartleggingFilters();
 document.getElementById('kartlBRA').addEventListener('input', e => { state.kartlBRA = +e.target.value; state.expandedKunde = null; renderKartlegging(); });
 document.getElementById('kartlPL').addEventListener('change', e => { state.kartlPL = e.target.value; state.expandedKunde = null; renderKartlegging(); });
-document.getElementById('kartlFylke').addEventListener('change', e => { state.kartlFylke = e.target.value; state.expandedKunde = null; renderKartlegging(); });
+function oppdaterKartlFylkeLabel() {
+  const total = 15;
+  const valgte = state.kartlFylke.size;
+  const lbl = document.getElementById('kartlFylkeLabel');
+  if (valgte === total) lbl.textContent = 'Alle fylker';
+  else if (valgte === 0) lbl.textContent = 'Ingen valgt';
+  else if (valgte === 1) lbl.textContent = [...state.kartlFylke][0];
+  else lbl.textContent = `${valgte} fylker valgt`;
+}
+document.querySelectorAll('.fylke-kartl').forEach(c => {
+  c.addEventListener('change', e => {
+    if (e.target.checked) state.kartlFylke.add(e.target.value);
+    else state.kartlFylke.delete(e.target.value);
+    oppdaterKartlFylkeLabel();
+    state.expandedKunde = null;
+    renderKartlegging();
+  });
+});
+oppdaterKartlFylkeLabel();
 document.getElementById('kartlRelasjon').addEventListener('change', e => { state.kartlRelasjon = e.target.value; state.expandedKunde = null; renderKartlegging(); });
 document.getElementById('kartlSearch').addEventListener('input', e => { state.kartlSearch = e.target.value; state.expandedKunde = null; renderKartlegging(); });
 document.getElementById('kartlLeietakere').addEventListener('change', e => { state.kartlLeietakere = e.target.value; state.expandedKunde = null; renderKartlegging(); });
