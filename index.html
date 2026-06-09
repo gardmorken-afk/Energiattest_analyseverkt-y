@@ -303,13 +303,16 @@ tr.detail td {
         <option value="A">Bare aktive</option>
         <option value="B">Bare tidligere</option>
       </select>
-      <select id="kunderTrigger">
-        <option value="alle" selected>Alle bygg</option>
-        <option value="utlopt">Utgått attest</option>
-        <option value="fjernv">Fjernvarme (re-sim)</option>
-        <option value="mangler">Mangler attest</option>
-        <option value="darlig">Dårlig karakter</option>
-      </select>
+      <details class="segment-dd" id="kunderTriggerDD">
+        <summary class="segment-summary"><span id="kunderTriggerLabel">Alle triggere</span></summary>
+        <div class="segment-checks">
+          <label><input type="checkbox" class="trig-kunder" value="utlopt" checked> Utgått attest</label>
+          <label><input type="checkbox" class="trig-kunder" value="fjernv" checked> Fjernvarme (re-sim)</label>
+          <label><input type="checkbox" class="trig-kunder" value="mangler" checked> Mangler attest</label>
+          <label><input type="checkbox" class="trig-kunder" value="darlig" checked> Dårlig karakter</label>
+          <label><input type="checkbox" class="trig-kunder" value="utloper3" checked> Utløper innen 3 år</label>
+        </div>
+      </details>
       <select id="kunderBRA">
         <option value="0" selected>≥ 1 000 m² (alle)</option>
         <option value="2500">≥ 2 500 m²</option>
@@ -362,13 +365,16 @@ tr.detail td {
         <option value="3">≥ 3 bygg</option>
         <option value="1">Alle størrelser</option>
       </select>
-      <select id="nysalgTrigger">
-        <option value="alle" selected>Alle triggere</option>
-        <option value="utlopt">Utgått attest</option>
-        <option value="fjernv">Fjernvarme</option>
-        <option value="mangler">Mangler attest</option>
-        <option value="darlig">Dårlig karakter</option>
-      </select>
+      <details class="segment-dd" id="nysalgTriggerDD">
+        <summary class="segment-summary"><span id="nysalgTriggerLabel">Alle triggere</span></summary>
+        <div class="segment-checks">
+          <label><input type="checkbox" class="trig-nysalg" value="utlopt" checked> Utgått attest</label>
+          <label><input type="checkbox" class="trig-nysalg" value="fjernv" checked> Fjernvarme</label>
+          <label><input type="checkbox" class="trig-nysalg" value="mangler" checked> Mangler attest</label>
+          <label><input type="checkbox" class="trig-nysalg" value="darlig" checked> Dårlig karakter</label>
+          <label><input type="checkbox" class="trig-nysalg" value="utloper3" checked> Utløper innen 3 år</label>
+        </div>
+      </details>
       <select id="nysalgBRA">
         <option value="0" selected>≥ 1 000 m² (alle)</option>
         <option value="2500">≥ 2 500 m² per bygg</option>
@@ -497,13 +503,13 @@ const state = {
   expandedKunde: null,
   kunderPL: 'Gard Morken',
   kunderStatus: 'alle',
-  kunderTrigger: 'alle',
+  kunderTrigger: new Set(['utlopt','fjernv','mangler','darlig','utloper3']),
   kunderFylke: 'alle',
   kunderBRA: 0,
   kunderSearch: '',
   kunderSegment: new Set(['kontor','handel','industri','logistikk','hotell','skole','helse','idrett','barnehage','kultur','offentlig','uten']),
   nysalgSize: 10,
-  nysalgTrigger: 'alle',
+  nysalgTrigger: new Set(['utlopt','fjernv','mangler','darlig','utloper3']),
   nysalgSearch: '',
   nysalgFylke: 'alle',
   nysalgBRA: 0,
@@ -539,6 +545,26 @@ function lagHvorforTekst(bygg) {
   if (n_t1 > 0) deler.push(`${n_t1} bygg dårlig karakter`);
   if (n_t3 > 0) deler.push(`${n_t3} bygg utløper innen 3 år`);
   return deler.slice(0,2).join(', ') || 'Ingen aktuelle triggere';
+}
+
+
+function byggMatcherTriggerSet(b, trigSet) {
+  if (trigSet.size === 5) return true; // alle huket av
+  if (trigSet.size === 0) return false;
+  if (b.tt === 'A') {
+    if (b.ah === 'Utløpt attest' && trigSet.has('utlopt')) return true;
+    if (b.ah !== 'Utløpt attest' && trigSet.has('mangler')) return true;
+    return false;
+  }
+  if (b.tt === 'C') {
+    const tk = b.tk || '0000';
+    if (tk[0] === '1' && trigSet.has('darlig')) return true;
+    if (tk[1] === '1' && trigSet.has('utlopt')) return true;
+    if (tk[2] === '1' && trigSet.has('utloper3')) return true;
+    if (tk[3] === '1' && trigSet.has('fjernv')) return true;
+    return false;
+  }
+  return false;
 }
 
 function byggMatcherTrigger(b, trigger) {
@@ -726,7 +752,7 @@ function renderKunder() {
   }
   if (state.kunderFylke !== 'alle') bygg = bygg.filter(b => b.fylke === state.kunderFylke);
   if (state.kunderStatus !== 'alle') bygg = bygg.filter(b => b.plst === state.kunderStatus);
-  if (state.kunderTrigger !== 'alle') bygg = bygg.filter(b => byggMatcherTrigger(b, state.kunderTrigger));
+  if (state.kunderTrigger.size < 5) bygg = bygg.filter(b => byggMatcherTriggerSet(b, state.kunderTrigger));
   if (state.kunderBRA > 0) bygg = bygg.filter(b => (b.b||0) >= state.kunderBRA);
   // Segment-filter: bygg matches hvis MINST ETT av byggets segmenter er huket av
   const segK = state.kunderSegment;
@@ -772,7 +798,7 @@ function renderKunder() {
 function renderNysalg() {
   let bygg = D.bygg.filter(b => !b.pl && !b.plst);
   if (state.nysalgFylke !== 'alle') bygg = bygg.filter(b => b.fylke === state.nysalgFylke);
-  if (state.nysalgTrigger !== 'alle') bygg = bygg.filter(b => byggMatcherTrigger(b, state.nysalgTrigger));
+  if (state.nysalgTrigger.size < 5) bygg = bygg.filter(b => byggMatcherTriggerSet(b, state.nysalgTrigger));
   if (state.nysalgBRA > 0) bygg = bygg.filter(b => (b.b||0) >= state.nysalgBRA);
   const segN = state.nysalgSegment;
   if (segN.size < 12) {
@@ -974,7 +1000,28 @@ document.querySelectorAll('.tab').forEach(t => {
 document.getElementById('kunderPL').addEventListener('change', e => { state.kunderPL = e.target.value; state.expandedKunde = null; renderKunder(); });
 document.getElementById('kunderFylke').addEventListener('change', e => { state.kunderFylke = e.target.value; state.expandedKunde = null; renderKunder(); });
 document.getElementById('kunderStatus').addEventListener('change', e => { state.kunderStatus = e.target.value; state.expandedKunde = null; renderKunder(); });
-document.getElementById('kunderTrigger').addEventListener('change', e => { state.kunderTrigger = e.target.value; state.expandedKunde = null; renderKunder(); });
+function oppdaterKunderTrigLabel() {
+  const total = 5;
+  const valgte = state.kunderTrigger.size;
+  const lbl = document.getElementById('kunderTriggerLabel');
+  if (valgte === total) lbl.textContent = 'Alle triggere';
+  else if (valgte === 0) lbl.textContent = 'Ingen valgt';
+  else if (valgte === 1) {
+    const navn = {utlopt:'Utgått',fjernv:'Fjernvarme',mangler:'Mangler attest',darlig:'Dårlig karakter',utloper3:'Utløper <3 år'};
+    lbl.textContent = navn[[...state.kunderTrigger][0]] || 'Trigger';
+  }
+  else lbl.textContent = `${valgte} triggere valgt`;
+}
+document.querySelectorAll('.trig-kunder').forEach(c => {
+  c.addEventListener('change', e => {
+    if (e.target.checked) state.kunderTrigger.add(e.target.value);
+    else state.kunderTrigger.delete(e.target.value);
+    oppdaterKunderTrigLabel();
+    state.expandedKunde = null;
+    renderKunder();
+  });
+});
+oppdaterKunderTrigLabel();
 document.getElementById('kunderBRA').addEventListener('change', e => { state.kunderBRA = +e.target.value; state.expandedKunde = null; renderKunder(); });
 document.getElementById('kunderSearch').addEventListener('input', e => { state.kunderSearch = e.target.value; state.expandedKunde = null; renderKunder(); });
 function oppdaterKunderSegLabel() {
@@ -998,7 +1045,28 @@ document.querySelectorAll('.seg-kunder').forEach(c => {
 oppdaterKunderSegLabel();
 document.getElementById('nysalgFylke').addEventListener('change', e => { state.nysalgFylke = e.target.value; state.expandedKunde = null; renderNysalg(); });
 document.getElementById('nysalgSize').addEventListener('change', e => { state.nysalgSize = +e.target.value; state.expandedKunde = null; renderNysalg(); });
-document.getElementById('nysalgTrigger').addEventListener('change', e => { state.nysalgTrigger = e.target.value; state.expandedKunde = null; renderNysalg(); });
+function oppdaterNysalgTrigLabel() {
+  const total = 5;
+  const valgte = state.nysalgTrigger.size;
+  const lbl = document.getElementById('nysalgTriggerLabel');
+  if (valgte === total) lbl.textContent = 'Alle triggere';
+  else if (valgte === 0) lbl.textContent = 'Ingen valgt';
+  else if (valgte === 1) {
+    const navn = {utlopt:'Utgått',fjernv:'Fjernvarme',mangler:'Mangler attest',darlig:'Dårlig karakter',utloper3:'Utløper <3 år'};
+    lbl.textContent = navn[[...state.nysalgTrigger][0]] || 'Trigger';
+  }
+  else lbl.textContent = `${valgte} triggere valgt`;
+}
+document.querySelectorAll('.trig-nysalg').forEach(c => {
+  c.addEventListener('change', e => {
+    if (e.target.checked) state.nysalgTrigger.add(e.target.value);
+    else state.nysalgTrigger.delete(e.target.value);
+    oppdaterNysalgTrigLabel();
+    state.expandedKunde = null;
+    renderNysalg();
+  });
+});
+oppdaterNysalgTrigLabel();
 document.getElementById('nysalgSearch').addEventListener('input', e => { state.nysalgSearch = e.target.value; state.expandedKunde = null; renderNysalg(); });
 document.getElementById('nysalgBRA').addEventListener('change', e => { state.nysalgBRA = +e.target.value; state.expandedKunde = null; renderNysalg(); });
 function oppdaterNysalgSegLabel() {
@@ -1060,7 +1128,7 @@ function lagreNyttPreset() {
     kunderPL: state.kunderPL,
     kunderFylke: state.kunderFylke,
     kunderStatus: state.kunderStatus,
-    kunderTrigger: state.kunderTrigger,
+    kunderTrigger: [...state.kunderTrigger],
     kunderBRA: state.kunderBRA,
     kunderSearch: state.kunderSearch
   };
@@ -1090,14 +1158,16 @@ function bruktPreset(navn) {
   state.kunderPL = p.kunderPL || 'alle';
   state.kunderFylke = p.kunderFylke || 'alle';
   state.kunderStatus = p.kunderStatus || 'alle';
-  state.kunderTrigger = p.kunderTrigger || 'alle';
+  state.kunderTrigger = new Set(Array.isArray(p.kunderTrigger) ? p.kunderTrigger : ['utlopt','fjernv','mangler','darlig','utloper3']);
   state.kunderBRA = p.kunderBRA || 0;
   state.kunderSearch = p.kunderSearch || '';
   // Sett verdier i UI
   document.getElementById('kunderPL').value = state.kunderPL;
   document.getElementById('kunderFylke').value = state.kunderFylke;
   document.getElementById('kunderStatus').value = state.kunderStatus;
-  document.getElementById('kunderTrigger').value = state.kunderTrigger;
+  // Sett checkbox-tilstand for triggere
+  document.querySelectorAll('.trig-kunder').forEach(c => { c.checked = state.kunderTrigger.has(c.value); });
+  oppdaterKunderTrigLabel();
   document.getElementById('kunderBRA').value = state.kunderBRA;
   document.getElementById('kunderSearch').value = state.kunderSearch;
   state.expandedKunde = null;
